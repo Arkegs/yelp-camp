@@ -17,7 +17,9 @@ var commentRoutes = require("./routes/comments"),
 	indexRoutes = require("./routes/index");
 
 //seedDB();
-var urlMongo = "mongodb+srv://Arkegs:0xxabc07-A@cluster0.i4xd8.mongodb.net/yelp_camp?retryWrites=true&w=majority"
+//var urlMongo = "mongodb://localhost:27017/yelp_camp"
+//var urlMongo = "mongodb+srv://Arkegs:0xxabc07-A@cluster0.i4xd8.mongodb.net/yelp_camp?retryWrites=true&w=majority"
+var urlMongo = process.env.DATABASEURL
 mongoose.connect(urlMongo, { useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({extended: true}));
