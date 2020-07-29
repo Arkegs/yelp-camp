@@ -10,12 +10,13 @@ var storage = multer.diskStorage({
 });
 var imageFilter = function (req, file, cb) {
     // accept image files only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|bmp)$/i)) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+		console.log("Ah nos fuimos a la conchetumare");
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
 };
-var upload = multer({ storage: storage, fileFilter: imageFilter})
+var upload = multer({ storage: storage, fileFilter: imageFilter});
 
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
@@ -36,24 +37,24 @@ router.get("/", function(req, res){
 });
 
 //CREATE - Add new campground to database
-router.post("/", middleware.isLoggedIn, function(req, res){
-	var name = req.body.name;
-	var price = req.body.price;
-	var image = req.body.image;
-	var desc = req.body.description;
-	var author = {
-		id: req.user._id, //req.user viene dado por el passport.js, al usar la funcion Authenticate (Gracias al isLoggedIn)
-		username: req.user.username
-	};
-	var newCamp = {name: name, price:price, image: image, description: desc, author: author};
-	//Create a new campground
-	Campground.create(newCamp, function(err, newlyCreated){
-		if(err){
-			console.log(err);
-		} else{
-			res.redirect("/campgrounds");
-		}
-	});
+router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, res) {
+	console.log(req.file);
+	cloudinary.uploader.upload(req.file.path, function(result) {
+  	// add cloudinary url for the image to the campground object under image property
+  	req.body.campground.image = result.secure_url;
+  	// add author to campground
+  	req.body.campground.author = {
+    	id: req.user._id,
+    	username: req.user.username
+  	}
+	Campground.create(req.body.campground, function(err, campground) {
+		if (err) {
+      	req.flash('error', err.message);
+      	return res.redirect('back');
+    	}
+    	res.redirect('/campgrounds/' + campground.id);
+  	});
+});
 });
 
 //NEW - Show form to create a new campground
