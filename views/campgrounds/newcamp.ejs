@@ -4,7 +4,7 @@
 	<div class="row">
 		<h1 style="text-align: center;">Create a new Campground!</h1>
 		<div style="width:30%; margin: 25px auto;">
-			<form action="/campgrounds" method="POST">
+			<form action="/campgrounds" method="POST" enctupe="mutlipart/form-data">
 				<div class = "form-group">
 					<input class="form-control" type="text" name="name" placeholder="Add the name">
 				</div>
@@ -12,7 +12,8 @@
 					<input class="form-control" type="number" name="price" placeholder="Add the price" min="0.00" step="0.01">
 				</div>
 				<div class = "form-group">
-					<input class="form-control" type="text" name="image" placeholder="Add the image url">
+					<label for="image">Add Image</label>
+					<input class="form-control" type="file" name="image" accept="image/*" required>
 				</div>
 				<div class = "form-group">
 					<input class="form-control" type="text" name="description" placeholder="Add a description">

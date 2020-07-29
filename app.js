@@ -18,6 +18,7 @@ var commentRoutes = require("./routes/comments"),
 
 //seedDB();
 //var urlMongo = "mongodb://localhost:27017/yelp_camp"
+//variables de entorno: export DATABASEURL=mongodb://localhost:27017/yelp_camp / export CLOUDINARY_API_KEY=898553665625971 / export CLOUDINARY_API_SECRET=QQvmBN3b7MxvOQZoosx-CDnJqZA
 //var urlMongo = "mongodb+srv://Arkegs:0xxabc07-A@cluster0.i4xd8.mongodb.net/yelp_camp?retryWrites=true&w=majority"
 var urlMongo = process.env.DATABASEURL
 mongoose.connect(urlMongo, { useNewUrlParser: true });
