@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
+var Review = require("../models/review");
 var middleware = require("../middleware"); //Reconoce solito el "index.js" asi que no hay que ponerlo, es un nombre especial
 var multer = require('multer');
 var storage = multer.diskStorage({
@@ -70,7 +71,10 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
 
 //SHOW - Show ONE campground in particular with detail
 router.get("/:id", function(req, res){
-	Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
+	Campground.findById(req.params.id).populate("comments").populate({
+		path: "reviews",
+		options: {sort: {createdAt: -1}} 
+	}).exec(function(err, foundCampground){
 		if(err){
 			console.log(err);
 		} else{
@@ -97,6 +101,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single('image'), 
 			req.flash("error", err.message);
 			res.redirect("back");
 		} else {
+			delete req.body.campground.rating;
 			if (req.file){
 				try {
 					await cloudinary.v2.uploader.destroy(campground.imageId);
@@ -127,9 +132,23 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 			return res.redirect("/back");
 		} try{
 			await cloudinary.v2.uploader.destroy(campground.imageId);
-			campground.remove();
-			req.flash("success", "Campground deleted successfully");
-			res.redirect("/campgrounds")
+			Comment.remove({"_id": {$in: campground.comments}}, function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/campgrounds");
+                }
+                // deletes all reviews associated with the campground
+                Review.remove({"_id": {$in: campground.reviews}}, function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.redirect("/campgrounds");
+                    }
+                    //  delete the campground
+                    campground.remove();
+					req.flash("success", "Campground deleted successfully");
+					res.redirect("/campgrounds")
+				});
+			});
 		} catch(err){
 			req.flash("error", err.message);
 			return res.redirect("/back");
@@ -137,5 +156,6 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 		
 	});
 });
+
 
 module.exports = router;
