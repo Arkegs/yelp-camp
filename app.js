@@ -13,6 +13,7 @@ var express = require("express"),
 
 //REQUIRING ROUTES
 var commentRoutes = require("./routes/comments"),
+	reviewRoutes = require("./routes/reviews"),
 	campgroundRoutes = require("./routes/campgrounds"),
 	indexRoutes = require("./routes/index");
 
@@ -53,6 +54,7 @@ app.use(function(req, res, next){
 app.use("/", indexRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 
 app.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function(){
