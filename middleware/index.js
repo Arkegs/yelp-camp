@@ -13,7 +13,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
 				res.redirect("back");
 			} else{
 				//Does the user own the campground? (.equals es un metodo de Mongoose)
-				if(foundCampground.author.id.equals(req.user._id)){ //Un === o == no serviria, porque camp.author.id es objeto, y req.user.id es String
+				if(foundCampground.author.id.equals(req.user._id) || req.user.isAdmin){ //Un === o == no serviria, porque camp.author.id es objeto, y req.user.id es String
 					next();
 				} else{
 					req.flash("error", "You don't have permission to do that");
@@ -36,7 +36,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
 				res.redirect("back");
 			} else{
 				//Does the user own the comment? (.equals es un metodo de Mongoose)
-				if(foundComment.author.id.equals(req.user._id)){ //Un === o == no serviria, porque camp.author.id es objeto, y req.user.id es String
+				if(foundComment.author.id.equals(req.user._id) || req.user.isAdmin){ //Un === o == no serviria, porque camp.author.id es objeto, y req.user.id es String
 					next();
 				} else{
 					req.flash("error", "You don't have permission to do that");
