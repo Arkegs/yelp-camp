@@ -17,7 +17,7 @@
 					<h4> <a><%= campoEncontrado.name %></a> </h4>
 					<p><%= campoEncontrado.description %></p>
 					<p>
-						<em>Submitted by <%= campoEncontrado.author.username%></em>
+						<em>Submitted by <a href="/users/<%= campoEncontrado.author.id%>"><%= campoEncontrado.author.username%></a></em>
 					</p>
 					<% if(currentUser && campoEncontrado.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ /* currentUser se usa en todo, definido en app.js 37 */ %> 
 						<a class= "btn btn-xs btn-warning" href="/campgrounds/<%= campoEncontrado._id %>/edit">Edit campground</a>

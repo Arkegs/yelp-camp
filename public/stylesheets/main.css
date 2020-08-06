@@ -17,3 +17,10 @@
 .checked {
     color: orange;
 }
+
+#profileImage{
+    width:100%;
+    max-width:300px;
+	max-height:300px;
+	padding-top: 10 px;
+}

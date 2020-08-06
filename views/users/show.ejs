@@ -1,0 +1,47 @@
+<%- include("../partials/header") %>
+
+<div class="row">
+	<div class="col-md-4">
+		<h4> <b><%= user.username %></b></h4> 
+		<h5> <%= "(" + user.firstName + " " + user.lastName + ")" %></h5>
+		<div class="thumbnail" id="profileThumbnail">
+			<img id="profileImage" src="<%= user.avatar %>" alt="user profile image">
+			<div class="caption"> <a href="mailto:<%= user.email %>"> <%= user.email %> </a></div>
+		</div>
+		<p>
+			Aqui va a haber una descripción pendiente, pero aun falta para añadirla. Mientras tanto, hay un pequeño parrafo para poder visualizar
+			donde iria la nueva descripción.
+		</p>
+	</div>
+	<div class="col-md-8">
+		<h4> <%= user.firstName + "'s campgrounds" %></h4>
+		<% if(campgrounds.length === 0){ %>
+			<h2>This user has not registered any campgrounds yet</h2>
+		<% } %>
+		<div class="row text-center" style="display:flex; flex-wrap: wrap;">
+		<% campgrounds.forEach(function(campgroundito){ %>
+			<div class="col-md-3 col-sm-6">
+				<div class="thumbnail">
+					<img src="<%= campgroundito.image %>">
+					<div class="caption">
+						<a href="/campgrounds/<%= campgroundito._id %>" <h4><%= campgroundito.name %></h4></a>
+						<% if (campgroundito.rating === 0) { %>
+						<p><em>No reviews yet.</em></p>
+						<% } else { %>
+							<div>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star <% if (campgroundito.rating > 1.5) { %> checked <% } %>"></span>
+								<span class="fa fa-star <% if (campgroundito.rating > 2.5) { %> checked <% } %>"></span>
+								<span class="fa fa-star <% if (campgroundito.rating > 3.5) { %> checked <% } %>"></span>
+								<span class="fa fa-star <% if (campgroundito.rating > 4.5) { %> checked <% } %>"></span>
+							</div>
+						<% } %>
+					</div>
+				</div>	
+			</div>
+		<% }); %>
+		</div>
+	</div>
+</div>
+
+<%- include("../partials/footer") %>
