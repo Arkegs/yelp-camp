@@ -26,7 +26,8 @@ router.post("/register", function(req, res){
 							firstName: req.body.firstName,
 						  	lastName: req.body.lastName,
 							avatar: req.body.avatar,
-							email: req.body.email
+							email: req.body.email,
+							description: req.body.description
 						  });
 	if(req.body.adminCode === "v!kfl3$90adfkjke!23900xx32"){
 		newUser.isAdmin = true;

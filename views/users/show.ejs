@@ -9,8 +9,11 @@
 			<div class="caption"> <a href="mailto:<%= user.email %>"> <%= user.email %> </a></div>
 		</div>
 		<p>
-			Aqui va a haber una descripción pendiente, pero aun falta para añadirla. Mientras tanto, hay un pequeño parrafo para poder visualizar
-			donde iria la nueva descripción.
+			<% if(user.description){ %>
+			<%= user.description %>
+			<% }else{ %>
+			This user has no description yet.
+			<%} %>
 		</p>
 	</div>
 	<div class="col-md-8">
