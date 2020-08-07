@@ -5,7 +5,7 @@
 		<h4> <b><%= user.username %></b></h4> 
 		<h5> <%= "(" + user.firstName + " " + user.lastName + ")" %></h5>
 		<div class="thumbnail" id="profileThumbnail">
-			<img id="profileImage" src="<%= user.avatar %>" alt="user profile image">
+			<img id="profileImage" src="<% if(user.avatar === ""){%> https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg <% }else{ %> <%= user.avatar %>" <% } %> alt="user profile image">
 			<div class="caption"> <a href="mailto:<%= user.email %>"> <%= user.email %> </a></div>
 		</div>
 		<p>
