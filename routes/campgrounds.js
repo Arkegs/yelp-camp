@@ -12,7 +12,6 @@ var storage = multer.diskStorage({
 var imageFilter = function (req, file, cb) {
     // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-		console.log("Ah nos fuimos a la conchetumare");
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
@@ -28,13 +27,31 @@ cloudinary.config({
 
 //INDEX - Shows all the campgrounds
 router.get("/", function(req, res){
-	Campground.find({}, function(err, campgrounditos){
-		if(err){
-			console.log(err);
-		} else{
-			res.render("campgrounds/index",{campground:campgrounditos, page:'campgrounds'});
-		}
-	});
+	var noMatch;
+	if(req.query.search){
+		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+		Campground.find({name: regex}, function(err, campgrounditos){
+			if(err){
+				console.log(err);
+			} else{
+				if(campgrounditos.length < 1){
+					noMatch = "There were no matches. Please, try searching another campground."
+					res.render("campgrounds/index",{campground:campgrounditos, page:'campgrounds', noMatch:noMatch});
+				} else{
+					res.render("campgrounds/index",{campground:campgrounditos, page:'campgrounds', noMatch:noMatch});
+				}
+			}
+		});
+	} else{
+		//Get all campgrounds from DB
+		Campground.find({}, function(err, campgrounditos){
+			if(err){
+				console.log(err);
+			} else{
+				res.render("campgrounds/index",{campground:campgrounditos, page:'campgrounds', noMatch:noMatch});
+			}
+		});
+	}
 });
 
 //CREATE - Add new campground to database
@@ -157,5 +174,8 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 	});
 });
 
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
