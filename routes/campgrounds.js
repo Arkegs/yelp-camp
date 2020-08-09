@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
+var Comment = require("../models/comment");
 var Review = require("../models/review");
 var middleware = require("../middleware"); //Reconoce solito el "index.js" asi que no hay que ponerlo, es un nombre especial
 var multer = require('multer');
@@ -11,8 +12,9 @@ var storage = multer.diskStorage({
 });
 var imageFilter = function (req, file, cb) {
     // accept image files only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        return cb(new Error('Only image files are allowed!'), false);
+    if (!file.originalname.match(/\.(jpg|jpeg|png|bmp)$/i)) {
+		req.fileValidationError = "The extension of the image must be JPG, JPEG, PNG or BMP";
+        return cb(null, false, req.fileValidationError);
     }
     cb(null, true);
 };
@@ -56,6 +58,10 @@ router.get("/", function(req, res){
 
 //CREATE - Add new campground to database
 router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, res) {
+	 if (req.fileValidationError) {
+		 req.flash('error', req.fileValidationError);
+        return res.redirect('back');
+	 }
     cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
       if(err) {
         req.flash('error', err.message);
@@ -168,7 +174,7 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 			});
 		} catch(err){
 			req.flash("error", err.message);
-			return res.redirect("/back");
+			return res.redirect("back");
 		}
 		
 	});
