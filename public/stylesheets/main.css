@@ -5,6 +5,7 @@
 
 .previu{
 	width: 100%;
+	max-width:300px;
 	max-height: 250px;
 	width: auto;
   	height: auto;
@@ -12,6 +13,7 @@
 
 .previu2{
 	width: 100%;
+	max-width:200px;
 	max-height: 150px;
 	width: auto;
   	height: auto;
