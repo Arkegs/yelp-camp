@@ -6,7 +6,7 @@
 		<div style="width:30%; margin: 25px auto;">
 			<form action="/campgrounds/<%= campground._id %>/comments" method="POST">
 				<div class = "form-group">
-					<textarea class="form-control" type="text" name="comment[text]" placeholder="Write your comment..." rows="5"></textarea>
+					<textarea class="form-control" type="text" name="comment[text]" placeholder="Write your comment..." rows="5" maxlength="500"></textarea>
 				</div>
 				<div class = "form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit!</button>

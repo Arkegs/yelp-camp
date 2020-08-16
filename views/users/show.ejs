@@ -25,7 +25,7 @@
 		<% campgrounds.forEach(function(campgroundito){ %>
 			<div class="col-md-3 col-sm-6">
 				<div class="thumbnail">
-					<img src="<%= campgroundito.image %>">
+					<img class="previu2" src="<%= campgroundito.image %>">
 					<div class="caption">
 						<a href="/campgrounds/<%= campgroundito._id %>" <h4><%= campgroundito.name %></h4></a>
 						<% if (campgroundito.rating === 0) { %>
