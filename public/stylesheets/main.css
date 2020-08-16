@@ -23,6 +23,14 @@
   text-overflow: ellipsis;
 }
 
+.trunkoa{
+	width: 150px;
+    display: block;
+	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .thumbnail{
 	padding: 0;
 }
